@@ -5,7 +5,7 @@ export function isSameNumericId(id1: Numeric, id2: Numeric) {
 }
 
 export function isNull(value: any): value is null | undefined {
-  return Object.is(value, void 0)
+  return value == null
 }
 
 export class NumericSet implements Iterable<string> {
@@ -18,8 +18,7 @@ export class NumericSet implements Iterable<string> {
     }
 
     for (const id of ids) {
-      this._record[id] = true
-      this._size++
+      this.add(id)
     }
   }
 

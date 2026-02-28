@@ -15,6 +15,6 @@ export function createMessageSegment<const T extends ProtocolMessageSendSegment[
 
 export function findMessageSegment<const T extends ProtocolMessageSendSegment['type'], R extends Extract<ProtocolMessageSegment, { type: T }>>(type: T, message?: ProtocolMessageSegment[] | string, cond?: (segment: R) => boolean): R | undefined {
   return message && Array.isArray(message)
-    ? message.find(segment => isMessageSegment(type, segment) && cond != null && cond(segment as R)) as R | undefined
+    ? message.find(segment => isMessageSegment(type, segment) && (cond == null || cond(segment as R))) as R | undefined
     : undefined
 }

@@ -277,6 +277,9 @@ export class ConnectionImpl extends PubSubImpl<ConnectionBasicPubSubHandlers> im
       clearTimeout(this._reconnectTimer)
 
     this._reconnectTimer = setTimeout(() => {
+      if (this._manualClose)
+        return
+
       this._connect(true).catch(() => {
         this._scheduleReconnect()
       })
@@ -285,6 +288,10 @@ export class ConnectionImpl extends PubSubImpl<ConnectionBasicPubSubHandlers> im
 
   close() {
     this._manualClose = true
+    if (this._reconnectTimer) {
+      clearTimeout(this._reconnectTimer)
+      this._reconnectTimer = undefined
+    }
     this._disposeTransportEvents?.()
     this._transport?.close()
   }

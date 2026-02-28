@@ -36,6 +36,6 @@ export function extractText(message: ProtocolMessageSegment[] | string, sep?: st
 
 export function filterSegments<const T extends ProtocolMessageSegment['type']>(type: T, message: ProtocolMessageSegment[] | string, cond?: (segment: Extract<ProtocolMessageSegment, { type: T }>) => boolean): Array<Extract<ProtocolMessageSegment, { type: T }>> {
   return Array.isArray(message)
-    ? message.filter(segment => isMessageSegment(type, segment) && cond?.(segment as any)) as Array<Extract<ProtocolMessageSegment, { type: T }>>
+    ? message.filter(segment => isMessageSegment(type, segment) && (cond == null || cond(segment as any))) as Array<Extract<ProtocolMessageSegment, { type: T }>>
     : []
 }
